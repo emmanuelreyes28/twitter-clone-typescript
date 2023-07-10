@@ -1,7 +1,7 @@
-import mongoose, { Schema, model, Model } from 'mongoose';
+import mongoose, { Schema, model, Model, Document } from 'mongoose';
 
 // create interface representing the document in mongodb
-export interface IUser {
+export interface IUser extends Document {
     username: string;
     email: string;
     password: string;
@@ -15,4 +15,4 @@ const userSchema = new Schema<IUser>({
 });
 
 // check if model exists if so use existing model otherwise create new model
-export const User = (mongoose.models.User || model("User", userSchema) as Model<IUser>)
+export const User: Model<IUser> = mongoose.models.User || model<IUser>('User', userSchema);

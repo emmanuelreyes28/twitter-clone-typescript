@@ -1,25 +1,20 @@
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
 import { User, IUser } from "@/models/User";
-// import { connectToDatabase } from "@/services/database.service";
-import clientPromise from "@/lib/mongodb";
-
-// connectToDatabase()
+import dbConnect from "@/lib/dbConnect";
 
 export async function POST(req: Request){
-    await clientPromise;
-    // const db = client.db();
-
     try{
+        await dbConnect()
         // receive data through request body
         const body: IUser = await req.json()
 
-        // destructure body data
-        const { username, email, password } = body
+        // destructure body data; with typescript you need to define the type of the object being destructured
+        const { username, email, password }: IUser = body
 
         // check if email or username is already in use
-        const existingEmail = await User.exists({ email })
-        const existingUsername = await User.exists({ username })
+        const existingEmail = await User.findOne({ email })
+        const existingUsername = await User.findOne({ username })
 
         if(existingEmail){
             return NextResponse.json(
