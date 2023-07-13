@@ -13,16 +13,12 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEvent, FormEventHandler, useState } from "react";
+import { useState } from "react";
 
 type Credentials = {
   username: string;
   email: string;
   password: string;
-};
-
-type ReqError = {
-  error: string;
 };
 
 export default function Register() {
@@ -31,7 +27,7 @@ export default function Register() {
     email: "",
     password: "",
   });
-  const [error, setError] = useState<ReqError>();
+  const [error, setError] = useState<string>("");
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -46,7 +42,6 @@ export default function Register() {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log("BUTTON CLICKED");
 
     try {
       const response = await fetch("api/register", {
@@ -60,10 +55,11 @@ export default function Register() {
       if (!response.ok) {
         const { message } = await response.json();
         setError(message);
+        console.log(message);
+      } else {
+        //TO-DO: route to timeline if registration successful
+        console.log("registration successful");
       }
-
-      //TO-DO: route to timeline if registration successful
-      console.log("registration successful");
     } catch (error) {
       console.error("An error occurred: ", error);
     }
@@ -121,6 +117,11 @@ export default function Register() {
               Create account
             </Button>
           </CardFooter>
+          {error && (
+            <CardDescription className="text-center text-red-600 pb-2">
+              {error}
+            </CardDescription>
+          )}
         </Card>
       </form>
     </div>
