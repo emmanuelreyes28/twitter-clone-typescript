@@ -67,7 +67,7 @@ export default function Register() {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="max-w-xl w-full px-4">
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl">Create an account</CardTitle>
