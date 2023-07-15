@@ -1,6 +1,6 @@
-import ComposeTweet from "@/components/ComposeTweet";
+import ComposeTweet from "@/components/compose-tweet";
 
-export default function Test() {
+export default function Timeline() {
   return (
     <div className="flex items-center justify-center">
       <ComposeTweet></ComposeTweet>
