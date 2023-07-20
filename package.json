@@ -11,6 +11,8 @@
   "dependencies": {
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@supabase/auth-helpers-nextjs": "^0.7.3",
+    "@supabase/supabase-js": "^2.26.0",
     "@types/mongoose": "^5.11.97",
     "@types/node": "20.4.0",
     "@types/react": "18.2.14",
