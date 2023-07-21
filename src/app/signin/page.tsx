@@ -12,18 +12,23 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 type Login = {
-  username: string;
+  email: string;
   password: string;
 };
 
 export default function SignIn() {
   const [data, setData] = useState<Login>({
-    username: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState<string>("");
+  const router = useRouter();
+
+  const supabase = createClientComponentClient();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -36,34 +41,20 @@ export default function SignIn() {
     });
   }
 
-  const handleSubmit = async (e: React.SyntheticEvent) => {
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password,
+    });
 
-    try {
-      const response = await fetch("api/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const { message } = await response.json();
-        setError(message);
-        console.log(message);
-      } else {
-        //TO-DO: route to timeline if signin successful
-        console.log("User successfully loggedin");
-      }
-    } catch (error) {
-      console.error("An error occurred: ", error);
-    }
+    router.push("/timeline");
+    router.refresh();
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <form onSubmit={handleSubmit} className="max-w-xl w-full px-4">
+      <form onSubmit={handleSignIn} className="max-w-xl w-full px-4">
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl">Blue Bird</CardTitle>
@@ -71,12 +62,12 @@ export default function SignIn() {
           </CardHeader>
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="email">Email</Label>
               <Input
-                id="username"
+                id="email"
                 type="text"
-                name="username"
-                value={data.username}
+                name="email"
+                value={data.email}
                 onChange={handleChange}
                 required
               />
