@@ -41,6 +41,7 @@ export default function SignIn() {
     });
   }
 
+  //TO-DO: handle fail signin
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await supabase.auth.signInWithPassword({
