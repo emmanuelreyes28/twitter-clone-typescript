@@ -21,11 +21,11 @@ type Login = {
 };
 
 export default function SignIn() {
-  const [data, setData] = useState<Login>({
+  const [login, setLogin] = useState<Login>({
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>();
   const router = useRouter();
 
   const supabase = createClientComponentClient();
@@ -33,7 +33,7 @@ export default function SignIn() {
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
-    setData((prevValue): Login => {
+    setLogin((prevValue): Login => {
       return {
         ...prevValue,
         [name]: value,
@@ -44,13 +44,17 @@ export default function SignIn() {
   //TO-DO: handle fail signin
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: login.email,
+      password: login.password,
     });
 
-    router.push("/timeline");
-    router.refresh();
+    if (error) {
+      setError(error.message);
+    } else {
+      router.push("/timeline");
+      router.refresh();
+    }
   };
 
   return (
@@ -68,7 +72,7 @@ export default function SignIn() {
                 id="email"
                 type="text"
                 name="email"
-                value={data.email}
+                value={login.email}
                 onChange={handleChange}
                 required
               />
@@ -79,7 +83,7 @@ export default function SignIn() {
                 id="password"
                 type="password"
                 name="password"
-                value={data.password}
+                value={login.password}
                 onChange={handleChange}
                 required
               />
