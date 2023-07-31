@@ -18,7 +18,13 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
-export default function AccountForm() {
+export default function AccountForm({ session }: { session: Session | null }) {
+  const supabase = createClientComponentClient<Database>();
+  const [loading, setLoading] = useState(true);
+  const [fullname, setFullname] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
+  const [website, setWebsite] = useState<string | null>(null);
+  const user = session?.user;
   return (
     <div>
       <Card>
