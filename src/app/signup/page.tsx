@@ -17,18 +17,16 @@ import { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 type Credentials = {
-  username: string;
   email: string;
   password: string;
 };
 
 export default function Register() {
   const [data, setData] = useState<Credentials>({
-    username: "",
     email: "",
     password: "",
   });
-  const [error, setError] = useState<string>("");
+  const [message, setMessage] = useState<string | null>(null);
   const supabase = createClientComponentClient();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -53,7 +51,7 @@ export default function Register() {
       },
     });
 
-    console.log("handle sign up function executed");
+    setMessage("Please verify your email");
   };
 
   return (
@@ -80,18 +78,6 @@ export default function Register() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                id="username"
-                type="text"
-                name="username"
-                value={data.username}
-                onChange={handleChange}
-                placeholder="duddy"
-                required
-              />
-            </div>
-            <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -108,9 +94,9 @@ export default function Register() {
               Create account
             </Button>
           </CardFooter>
-          {error && (
-            <CardDescription className="text-center text-red-600 pb-2">
-              {error}
+          {message && (
+            <CardDescription className="text-center pb-2">
+              {message}
             </CardDescription>
           )}
         </Card>

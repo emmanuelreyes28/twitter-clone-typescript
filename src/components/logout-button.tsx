@@ -15,10 +15,10 @@ export default function LogoutButton() {
   };
   return (
     <button
-      className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+      className="py-2 px-4 mr-4 mt-2 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover hover:underline"
       onClick={signOut}
     >
-      Logout
+      Log Out
     </button>
   );
 }
