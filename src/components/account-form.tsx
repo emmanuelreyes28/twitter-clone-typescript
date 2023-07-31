@@ -4,7 +4,7 @@ import {
   Session,
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
-// import database after creating db type
+import { Database } from "@/types/supabase";
 
 import {
   Card,
